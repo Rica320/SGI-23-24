@@ -39,7 +39,7 @@ class MyContents {
     this.lightPenumbra = 0;
     this.lightDecay = 0;
     this.lightPosition = new THREE.Vector3(2, 5, 1);
-    this.lightTarget = new THREE.Vector3(1, 0.1, 0);
+    this.lightTarget = new THREE.Vector3(1, 0.1, 0); // TODO: why does nothing change here?
 
     // add a spot light
     this.spotLight = new THREE.SpotLight(
@@ -104,13 +104,34 @@ class MyContents {
 
     this.buildBox();
 
-    // Create a Plane Mesh with basic material
+    // add a area light (color, intensity, width, height)
+    const areaLight = new THREE.RectAreaLight(0xf0ffff, 1500, 5, 5);
+    areaLight.position.set(0, 3, 0);
+    areaLight.rotateX(Math.PI / 2); // Rotate 90 degrees on the X-axis
+    this.app.scene.add(areaLight);
 
+    // TODO: Ask teacher about this
+
+    // Create a Plane Mesh with basic material
     let plane = new THREE.PlaneGeometry(10, 10);
     this.planeMesh = new THREE.Mesh(plane, this.planeMaterial);
     this.planeMesh.rotation.x = -Math.PI / 2;
     this.planeMesh.position.y = -0;
     this.app.scene.add(this.planeMesh);
+
+    // Create a BoxGeometry to represent the area of the light
+    const lightAreaGeometry = new THREE.BoxGeometry(5, 5, 0.1); // Width, Height, Depth (set depth as a small value)
+    const lightAreaMaterial = new THREE.MeshBasicMaterial({
+      color: 0x00ff00,
+      transparent: true,
+      opacity: 0.35,
+    }); // Green, semi-transparent material
+
+    // Unlike other light sources, RectAreaLight does not emit light by default in Three.js
+    const lightAreaMesh = new THREE.Mesh(lightAreaGeometry, lightAreaMaterial);
+    lightAreaMesh.position.set(0, 3, 0); // Position it at the same location as the area light
+    lightAreaMesh.rotateX(Math.PI / 2); // Rotate 90 degrees on the X-axis
+    //this.app.scene.add(lightAreaMesh);
   }
 
   /**
@@ -217,6 +238,8 @@ class MyContents {
   update() {
     // check if box mesh needs to be updated
     this.updateBoxIfRequired();
+
+    //console.log(this.spotLight.position);
 
     // sets the box mesh position based on the displacement vector
     this.boxMesh.position.x = this.boxDisplacement.x;
