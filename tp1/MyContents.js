@@ -23,7 +23,7 @@ class MyContents {
     // plane related attributes
     this.diffusePlaneColor = "rgb(0,0,0)";
     this.specularPlaneColor = "rgb(128,128,128)";
-    this.planeShininess = 30;
+    this.planeShininess = 0;
     this.planeMaterial = new THREE.MeshPhongMaterial({
       color: this.diffusePlaneColor,
       specular: this.specularPlaneColor,
@@ -88,8 +88,8 @@ class MyContents {
     }
 
     // add a point light on top of the model
-    const pointLight = new THREE.PointLight(0xffffff, 5, 0);
-    pointLight.position.set(0, 2, 0);
+    const pointLight = new THREE.PointLight(0xffffff, 0, 0, 0);
+    pointLight.position.set(0, 20, 0);
     // this.app.scene.add(pointLight);
     this.app.scene.add(this.spotLight);
 

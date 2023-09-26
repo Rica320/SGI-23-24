@@ -33,3 +33,9 @@
 
 - The plane is black, its also possible to see the specular light. The diffuse light is black and its present in the plane .
 
+- The shininess of the plane affects the size of the specular light effect. The bigger the shininess (n) the smaller the specular light effect.
+
+- The more distance we put to the point light the farther the light will achive.
+  
+- NOTE: Intensity is not the penultimate parameter of the point light.
+- The change of decay will determine the effect that the distance between the light and the object point will have in the light intensity. The bigger the decay the smaller the effect of the distance in the light intensity. Its not clear if 1 is a linear decay and 2 is a quadratic decay. 
