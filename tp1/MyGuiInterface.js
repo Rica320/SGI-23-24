@@ -132,7 +132,47 @@ class MyGuiInterface {
         this.contents.updateLightDecay();
       });
 
-    lightFolder.open();
+    // g. Posição: (2,5,1)
+    const lightPosition = lightFolder.addFolder("Posição");
+    lightPosition
+      .add(this.contents.lightPosition, "x", -10, 10)
+      .name("x")
+      .onChange(() => {
+        this.contents.updateLightPosition();
+      });
+    lightPosition
+      .add(this.contents.lightPosition, "y", -10, 10)
+      .name("y")
+      .onChange(() => {
+        this.contents.updateLightPosition();
+      });
+    lightPosition
+      .add(this.contents.lightPosition, "z", -10, 10)
+      .name("z")
+      .onChange(() => {
+        this.contents.updateLightPosition();
+      });
+
+    // h. Target: (1,0.1)
+    const lightTarget = lightFolder.addFolder("Target");
+    lightTarget
+      .add(this.contents.lightTarget, "x", -10, 10)
+      .name("x")
+      .onChange(() => {
+        this.contents.updateLightTarget();
+      });
+    lightTarget
+      .add(this.contents.lightTarget, "y", -10, 10)
+      .name("y")
+      .onChange(() => {
+        this.contents.updateLightTarget();
+      });
+    lightTarget
+      .add(this.contents.lightTarget, "z", -10, 10)
+      .name("z")
+      .onChange(() => {
+        this.contents.updateLightTarget();
+      });
   }
 }
 
