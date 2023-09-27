@@ -82,6 +82,28 @@ class MyGuiInterface {
 
     // ... your existing code ...
 
+    const textFolder = this.datgui.addFolder("Textures");
+
+    /*
+    textFolder
+      .add(this.contents, "Wrapping mode")
+      .name("Wrapping mode")
+      .onChange(() => {
+        this.contents.updateWrappingMode();
+      });
+    */
+
+      textFolder
+      .add(this.contents, "wrapping", [
+        "Wrapping",
+        "Mirror",
+        "Top",
+      ])
+      .name("active camera").onChange((d) => {
+        this.contents.updateWrappingMode(d);
+      });
+
+
     const lightFolder = this.datgui.addFolder("Light");
 
     // a. Cor: branca

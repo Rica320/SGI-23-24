@@ -21,16 +21,52 @@ class MyContents {
     this.boxDisplacement = new THREE.Vector3(0, 2, 0);
 
     // plane related attributes
-    this.diffusePlaneColor = "rgb(0,0,0)";
-    this.specularPlaneColor = "rgb(128,128,128)";
-    this.planeShininess = 0;
-    this.planeMaterial = new THREE.MeshPhongMaterial({
-      color: this.diffusePlaneColor,
-      specular: this.specularPlaneColor,
-      emissive: "#000000",
-      shininess: this.planeShininess,
-    });
+    // plane related attributes
 
+    //texture
+
+    this.planeTexture =
+      new THREE.TextureLoader().load('textures/feup_b.jpg');
+
+    this.planeTexture.wrapS = THREE.RepeatWrapping;
+
+    this.planeTexture.wrapT = THREE.RepeatWrapping;
+
+    // material
+
+    this.diffusePlaneColor = "rgb(128,128,128)"
+
+    this.specularPlaneColor = "rgb(0,0,0)"
+
+    this.planeShininess = 0
+
+    // relating texture and material:
+
+    // two alternatives with different results
+
+    // alternative 1
+/*
+    this.planeMaterial = new THREE.MeshPhongMaterial({
+
+      color: this.diffusePlaneColor,
+
+      specular: this.specularPlaneColor,
+
+      emissive: "#000000", shininess: this.planeShininess,
+
+      map: this.planeTexture
+    })
+*/
+    // end of alternative 1
+
+    // alternative 2
+
+     this.planeMaterial = new THREE.MeshLambertMaterial({
+            map : this.planeTexture });
+
+    // end of alternative 2
+
+    let plane = new THREE.PlaneGeometry(10, 10);
     // spotlight related attributes
     this.lightColor = 0xffffff;
     this.lightIntensity = 15;
@@ -51,6 +87,7 @@ class MyContents {
       this.lightDecay
     );
     this.spotLight.position.copy(this.lightPosition);
+    this.app.scene.add(this.spotLight.target);
     this.spotLight.target.position.copy(this.lightTarget);
   }
 
@@ -63,6 +100,7 @@ class MyContents {
       specular: "#000000",
       emissive: "#000000",
       shininess: 90,
+      map: new THREE.TextureLoader().load("textures/feup_entry.jpg"),
     });
 
     // Create a Cube Mesh with basic material
@@ -101,7 +139,7 @@ class MyContents {
     // add a spot light helper for the previous spot light
     const spotLightHelper = new THREE.SpotLightHelper(this.spotLight);
     this.app.scene.add(spotLightHelper);
-    
+
 
     //const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     //directionalLight.position.set(-5, 10, -2);
@@ -114,14 +152,14 @@ class MyContents {
 
     //this.app.scene.add(directionalLight.target);
     //this.app.scene.add(directionalLight);
-    
 
 
 
-    
+
+
     //const directionalLightHelper = new THREE.DirectionalLightHelper(
-      //directionalLight,
-      //5
+    //directionalLight,
+    //5
     //);
     // this.app.scene.add(directionalLightHelper);
 
@@ -136,14 +174,31 @@ class MyContents {
     areaLight.rotateX(Math.PI / 2); // Rotate 90 degrees on the X-axis
     this.app.scene.add(areaLight);
 
+
+
+
     // TODO: Ask teacher about this
 
     // Create a Plane Mesh with basic material
-    let plane = new THREE.PlaneGeometry(10, 10);
+
+    let planeSizeU = 10;
+    let planeSizeV = 7;
+    let planeUVRate = planeSizeV / planeSizeU;
+    let planeTextureUVRate = 3354 / 2385; // image dimensions
+    let planeTextureRepeatU = 1;
+    let planeTextureRepeatV =
+      planeTextureRepeatU * planeUVRate * planeTextureUVRate;
+    this.planeTexture.repeat.set(
+      planeTextureRepeatU, planeTextureRepeatV);
+    this.planeTexture.rotation = 30 * Math.PI / 180;
+    this.planeTexture.offset = new THREE.Vector2(0, 0);
+    var plane = new THREE.PlaneGeometry(planeSizeU, planeSizeV);
     this.planeMesh = new THREE.Mesh(plane, this.planeMaterial);
     this.planeMesh.rotation.x = -Math.PI / 2;
-    this.planeMesh.position.y = -0;
+    this.planeMesh.position.y = 0;
     this.app.scene.add(this.planeMesh);
+
+
 
     // Create a BoxGeometry to represent the area of the light
     const lightAreaGeometry = new THREE.BoxGeometry(5, 5, 0.1); // Width, Height, Depth (set depth as a small value)
@@ -183,6 +238,21 @@ class MyContents {
   updatePlaneShininess(value) {
     this.planeShininess = value;
     this.planeMaterial.shininess = this.planeShininess;
+  }
+
+  updateWrappingMode(d) {
+    if (d === "Wrapping") {
+      this.planeTexture.wrapS = THREE.ClampToEdgeWrapping;
+      this.planeTexture.wrapT = THREE.ClampToEdgeWrapping;
+    } else if (d === "Mirror") {
+      this.planeTexture.wrapS = THREE.MirroredRepeatWrapping;
+      this.planeTexture.wrapT = THREE.MirroredRepeatWrapping;
+    }
+     else {
+      this.planeTexture.wrapS = THREE.RepeatWrapping;
+      this.planeTexture.wrapT = THREE.RepeatWrapping;
+    }
+
   }
 
   /**
