@@ -51,6 +51,7 @@ class MyContents {
       this.lightDecay
     );
     this.spotLight.position.copy(this.lightPosition);
+    this.app.scene.add(this.spotLight.target) // ITS IMPORTANT TO ADD THE TARGET AS WELL IF ITS A VECTOR INSTEAD OF AN OBJECT
     this.spotLight.target.position.copy(this.lightTarget);
   }
 
