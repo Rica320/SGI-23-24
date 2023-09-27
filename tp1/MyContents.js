@@ -44,35 +44,35 @@ class MyContents {
 
     // alternative 1
 
-    this.planeMaterial = new THREE.MeshPhongMaterial({
+    /* this.planeMaterial = new THREE.MeshPhongMaterial({
       color: this.diffusePlaneColor,
       specular: this.specularPlaneColor,
       emissive: "#000000",
       shininess: this.planeShininess,
       map: this.planeTexture,
     });
-
+ */
     // end of alternative 1
 
     // alternative 2
 
-    // this.planeMaterial = new THREE.MeshLambertMaterial({
-
-    //        map : this.planeTexture });
+    this.planeMaterial = new THREE.MeshLambertMaterial({
+      map: this.planeTexture,
+    });
 
     // end of alternative 2
 
     this.plane = new THREE.PlaneGeometry(10, 10);
     /* 
-    this.diffusePlaneColor = "rgb(0,0,0)";
-    this.specularPlaneColor = "rgb(128,128,128)";
-    this.planeShininess = 0;
+    this.diffusePlaneColor = "rgb(0,0,0)"
+    this.specularPlaneColor = "rgb(128,128,128)"
+    this.planeShininess = 0
     this.planeMaterial = new THREE.MeshPhongMaterial({
       color: this.diffusePlaneColor,
       specular: this.specularPlaneColor,
       emissive: "#000000",
       shininess: this.planeShininess,
-    });
+    })
  */
     // spotlight related attributes
     this.lightColor = 0xffffff;
@@ -134,7 +134,7 @@ class MyContents {
     // add a point light on top of the model
     const pointLight = new THREE.PointLight(0xffffff, 0, 0, 0);
     pointLight.position.set(0, 20, 0);
-    //this.app.scene.add(pointLight);
+    //this.app.scene.add(pointLight)
     this.app.scene.add(this.spotLight);
 
     // add a point light helper for the previous point light
@@ -146,23 +146,23 @@ class MyContents {
     const spotLightHelper = new THREE.SpotLightHelper(this.spotLight);
     this.app.scene.add(spotLightHelper);
 
-    //const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    //directionalLight.position.set(-5, 10, -2);
+    //const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+    //directionalLight.position.set(-5, 10, -2)
 
     /// TARGET with directional light
     this.buildBox();
-    //this.app.scene.add(this.boxMesh);
+    //this.app.scene.add(this.boxMesh)
 
-    //directionalLight.target = this.boxMesh;
+    //directionalLight.target = this.boxMesh
 
-    //this.app.scene.add(directionalLight.target);
-    //this.app.scene.add(directionalLight);
+    //this.app.scene.add(directionalLight.target)
+    //this.app.scene.add(directionalLight)
 
     //const directionalLightHelper = new THREE.DirectionalLightHelper(
     //directionalLight,
     //5
-    //);
-    // this.app.scene.add(directionalLightHelper);
+    //)
+    // this.app.scene.add(directionalLightHelper)
 
     // add an ambient light
     const ambientLight = new THREE.AmbientLight(0x6f6f6f);
@@ -177,10 +177,20 @@ class MyContents {
     // TODO: Ask teacher about this
 
     // Create a Plane Mesh with basic material
-    //let plane = new THREE.PlaneGeometry(10, 10);
-    this.planeMesh = new THREE.Mesh(this.plane, this.planeMaterial);
+    let planeSizeU = 10;
+    let planeSizeV = 7;
+    let planeUVRate = planeSizeV / planeSizeU;
+    let planeTextureUVRate = 3354 / 2385; // image dimensions
+    let planeTextureRepeatU = 1;
+    let planeTextureRepeatV =
+      planeTextureRepeatU * planeUVRate * planeTextureUVRate;
+    this.planeTexture.repeat.set(planeTextureRepeatU, planeTextureRepeatV);
+    this.planeTexture.rotation = 0;
+    this.planeTexture.offset = new THREE.Vector2(0, 0);
+    var plane = new THREE.PlaneGeometry(planeSizeU, planeSizeV);
+    this.planeMesh = new THREE.Mesh(plane, this.planeMaterial);
     this.planeMesh.rotation.x = -Math.PI / 2;
-    this.planeMesh.position.y = -0;
+    this.planeMesh.position.y = 0;
     this.app.scene.add(this.planeMesh);
 
     // Create a BoxGeometry to represent the area of the light
@@ -195,7 +205,7 @@ class MyContents {
     const lightAreaMesh = new THREE.Mesh(lightAreaGeometry, lightAreaMaterial);
     lightAreaMesh.position.set(0, 3, 0); // Position it at the same location as the area light
     lightAreaMesh.rotateX(Math.PI / 2); // Rotate 90 degrees on the X-axis
-    //this.app.scene.add(lightAreaMesh);
+    //this.app.scene.add(lightAreaMesh)
   }
 
   /**
@@ -303,7 +313,7 @@ class MyContents {
     // check if box mesh needs to be updated
     this.updateBoxIfRequired();
 
-    //console.log(this.spotLight.position);
+    //console.log(this.spotLight.position)
 
     // sets the box mesh position based on the displacement vector
     this.boxMesh.position.x = this.boxDisplacement.x;
