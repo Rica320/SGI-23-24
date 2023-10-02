@@ -64,6 +64,15 @@ class MyContents {
     // end of alternative 2
 
     let plane = new THREE.PlaneGeometry(10, 10);
+
+    this.repeatS = 1;
+    this.repeatT = 1;
+
+    this.offU = 0;
+    this.offV = 0;
+
+    this.rot = 0;
+
     // spotlight related attributes
     this.lightColor = 0xffffff;
     this.lightIntensity = 15;
@@ -184,7 +193,7 @@ class MyContents {
       planeTextureRepeatU * planeUVRate * planeTextureUVRate;
     this.planeTexture.repeat.set(planeTextureRepeatU, planeTextureRepeatV);
     this.planeTexture.rotation = 0;
-    this.planeTexture.offset = new THREE.Vector2(0, 0);
+    this.planeTexture.offset = new THREE.Vector2(this.offU, this.offV);
     var plane = new THREE.PlaneGeometry(planeSizeU, planeSizeV);
     this.planeMesh = new THREE.Mesh(plane, this.planeMaterial);
     this.planeMesh.rotation.x = -Math.PI / 2;
@@ -246,6 +255,39 @@ class MyContents {
       this.planeTexture.wrapT = THREE.RepeatWrapping;
     }
 
+  }
+
+  updateRepeatS(value) {
+    let planeSizeU = 10;
+    let planeSizeV = 7;
+    let planeUVRate = planeSizeV / planeSizeU;
+    let planeTextureUVRate = 3354 / 2385; // image dimensions
+    let planeTextureRepeatU = this.repeatS;
+    let planeTextureRepeatV =
+      planeTextureRepeatU * planeUVRate * planeTextureUVRate;
+    this.planeTexture.repeat.set(this.repeatS, planeTextureRepeatV);
+
+  }
+
+  updateRepeatT(value) {
+    let planeSizeU = 10;
+    let planeSizeV = 7;
+    let planeUVRate = planeSizeV / planeSizeU;
+    let planeTextureUVRate = 3354 / 2385; // image dimensions
+    let planeTextureRepeatV = this.repeatT
+  
+    let planeTextureRepeatU = planeTextureRepeatV / (planeUVRate * planeTextureUVRate);
+
+    this.planeTexture.repeat.set(planeTextureRepeatU, planeTextureRepeatV);
+
+  }
+
+  updateOFF() {
+    this.planeTexture.offset.set(this.offU, this.offV);
+  }
+
+  rotation() {
+    this.planeTexture.rotation = this.rot;
   }
 
   /**

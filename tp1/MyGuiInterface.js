@@ -93,7 +93,7 @@ class MyGuiInterface {
       });
     */
 
-      textFolder
+    textFolder
       .add(this.contents, "wrapping", [
         "Wrapping",
         "Mirror",
@@ -103,6 +103,27 @@ class MyGuiInterface {
         this.contents.updateWrappingMode(d);
       });
 
+    textFolder.add(this.contents, "repeatS", 0, 10).name("repeatS").onChange((value) => {
+      this.contents.updateRepeatS(value);
+    });
+
+    textFolder.add(this.contents, "repeatT", 0, 10).name("repeatT").onChange((value) => {
+      this.contents.updateRepeatT(value);
+    });
+
+    textFolder.add(this.contents, "offU", 0, 10).name("offU").onChange(() => {
+      this.contents.updateOFF();
+    });
+
+    textFolder.add(this.contents, "offV", 0, 10).name("offV").onChange((value) => {
+      this.contents.updateOFF();
+
+    });
+
+    textFolder.add(this.contents, "rot", 0, Math.PI).name("rot").onChange(() => {
+      this.contents.rotation();
+    });
+    
 
     const lightFolder = this.datgui.addFolder("Light");
 
