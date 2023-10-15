@@ -57,8 +57,10 @@ class MyContents  {
 
         if (this.polyline !== null) this.app.scene.remove(this.polyline)
         if (this.quadraticBezierCurve !== null) this.app.scene.remove(this.quadraticBezierCurve)
+        if (this.cubicBezierCurve !== null) this.app.scene.remove(this.cubicBezierCurve)
 
         this.initQuadraticBezierCurve()
+        this.initCubic()
         this.initPolyline()
 
     }
@@ -124,6 +126,50 @@ class MyContents  {
         this.app.scene.add( this.polyline );
 
     }
+
+    initCubic() {
+        let points = [
+    
+            new THREE.Vector3( -0.6, -2.6, 0.0 ), // starting point
+    
+            new THREE.Vector3(    0,  0.6, 3.0 ), // control point
+    
+            new THREE.Vector3(  0.6, -0.6, 0.0 ),  // ending point
+
+            new THREE.Vector3(  0.6, -0.6, 2.0 )  // ending point
+    
+        ]
+    
+            let position = new THREE.Vector3(-4,0,0)
+    
+            this.drawHull(position, points);
+    
+    
+    
+        let curve =
+    
+            new THREE.CubicBezierCurve3( points[0], points[1], points[2], points[3])
+    
+        // sample a number of points on the curve
+    
+        let sampledPoints = curve.getPoints( this.numberOfSamples );
+    
+        this.curveGeometry =
+    
+                new THREE.BufferGeometry().setFromPoints( sampledPoints )
+    
+        this.lineMaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } )
+    
+        this.lineObj = new THREE.Line( this.curveGeometry, this.lineMaterial )
+    
+        this.lineObj.position.set(position.x,position.y,position.z)
+    
+        this.app.scene.add( this.lineObj );
+    
+    
+    
+    }
+
     initQuadraticBezierCurve() {
 
         let points = [
