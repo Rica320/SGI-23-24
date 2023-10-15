@@ -30,6 +30,7 @@ class MyContents  {
 
         this.polyline = null
         this.quadraticBezierCurve = null
+        this.catmull = null
 
         // number of samples to use for the curves (not for polyline)
 
@@ -58,7 +59,9 @@ class MyContents  {
         if (this.polyline !== null) this.app.scene.remove(this.polyline)
         if (this.quadraticBezierCurve !== null) this.app.scene.remove(this.quadraticBezierCurve)
         if (this.cubicBezierCurve !== null) this.app.scene.remove(this.cubicBezierCurve)
+        if (this.catmull !== null) this.app.scene.remove(this.catmull)
 
+        this.initCatmullRom()
         this.initQuadraticBezierCurve()
         this.initCubic()
         this.initPolyline()
@@ -127,6 +130,41 @@ class MyContents  {
 
     }
 
+    initCatmullRom() {
+        
+        let points = [
+
+            new THREE.Vector3( -0.6, -2.6, 0.0 ), // starting point
+
+            new THREE.Vector3(    0,  0.6, 3.0 ), // control point
+
+            new THREE.Vector3(  0.6, -0.6, 0.0 ),  // ending point
+
+            new THREE.Vector3(  0.6, -0.6, 2.0 )  // ending point
+
+        ]
+
+        let position = new THREE.Vector3(0,0,0)
+
+        this.drawHull(position, points);
+
+        // add catmullRom to scene
+
+        this.catmull = new THREE.CatmullRomCurve3( points )
+
+        let sampledPoints = this.catmull.getPoints( 40 );
+
+        this.curveGeometry = new THREE.BufferGeometry().setFromPoints( sampledPoints )
+
+        this.lineMaterial = new THREE.LineBasicMaterial( { color: 0xffff00 } )
+
+        this.lineObj = new THREE.Line( this.curveGeometry, this.lineMaterial )
+
+        this.lineObj.position.set(position.x,position.y,position.z)
+
+        this.app.scene.add( this.lineObj );
+    }
+
     initCubic() {
         let points = [
     
@@ -158,7 +196,7 @@ class MyContents  {
     
                 new THREE.BufferGeometry().setFromPoints( sampledPoints )
     
-        this.lineMaterial = new THREE.LineBasicMaterial( { color: 0x00ff00 } )
+        this.lineMaterial = new THREE.LineBasicMaterial( { color: 0xff00ff } )
     
         this.lineObj = new THREE.Line( this.curveGeometry, this.lineMaterial )
     
